@@ -1620,6 +1620,14 @@
     "@chakra-ui/theme-tools" "1.1.7"
     "@chakra-ui/utils" "1.8.0"
 
+"@chakra-ui/theme@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/theme/-/theme-1.9.0.tgz#667ddaf1c042b1c2ad22fc3b70fa0697c5f54fac"
+  integrity sha512-IOvp7vF1/XZwH4eCr8xOhp1J5UW26GoQqLR32YsHgdaDhcIMMsX/Q5RVWU25zTvkPqHT/nDetzVc6dkE6864XA==
+  dependencies:
+    "@chakra-ui/theme-tools" "1.1.7"
+    "@chakra-ui/utils" "1.8.0"
+
 "@chakra-ui/toast@1.2.7":
   version "1.2.7"
   resolved "https://registry.npmjs.org/@chakra-ui/toast/-/toast-1.2.7.tgz"
@@ -9872,6 +9880,11 @@ react-focus-lock@2.5.0:
     react-clientside-effect "^1.2.2"
     use-callback-ref "^1.2.1"
     use-sidecar "^1.0.1"
+
+react-icons@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.2.0.tgz#6dda80c8a8f338ff96a1851424d63083282630d0"
+  integrity sha512-rmzEDFt+AVXRzD7zDE21gcxyBizD/3NqjbX6cmViAgdqfJ2UiLer8927/QhhrXQV7dEj/1EGuOTPp7JnLYVJKQ==
 
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"

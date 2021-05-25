@@ -4,6 +4,7 @@ import {
   Switch,
   BrowserRouter as Router,
 } from 'react-router-dom';
+import { Box, Button } from '@chakra-ui/react';
 
 import './App.css';
 import { Routes } from './interfaces';
@@ -28,17 +29,25 @@ const routes: Array<Routes> = [
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        {routes.map((route) => {
-          const { Component, path } = route;
-          return (
-            <Route key={path} path={path} component={Component} exact={true} />
-          );
-        })}
-        <Redirect to="/" />
-      </Switch>
-    </Router>
+    <Box>
+      <Button color="primary"> Click me</Button>
+      <Router>
+        <Switch>
+          {routes.map((route) => {
+            const { Component, path } = route;
+            return (
+              <Route
+                key={path}
+                path={path}
+                component={Component}
+                exact={true}
+              />
+            );
+          })}
+          <Redirect to="/" />
+        </Switch>
+      </Router>
+    </Box>
   );
 }
 
