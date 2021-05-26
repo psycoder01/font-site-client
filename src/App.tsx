@@ -4,7 +4,7 @@ import {
   Switch,
   BrowserRouter as Router,
 } from 'react-router-dom';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, useColorMode, Text } from '@chakra-ui/react';
 
 import './App.css';
 import { Routes } from './interfaces';
@@ -28,9 +28,13 @@ const routes: Array<Routes> = [
 ];
 
 function App() {
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Box>
-      <Button color="primary"> Click me</Button>
+      <Button color="primary" onClick={toggleColorMode}>
+        Click me
+      </Button>
+      <Text>Yeahhh!</Text>
       <Router>
         <Switch>
           {routes.map((route) => {

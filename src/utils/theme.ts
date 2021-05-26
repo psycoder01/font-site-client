@@ -1,7 +1,31 @@
 import { extendTheme } from '@chakra-ui/react';
 
-export const theme = extendTheme({
-  colors: {
-    primary: 'teal',
+const colors = {
+  primary: 'teal',
+  secondary: 'gray',
+};
+
+const fonts = {
+  body: 'poppins',
+  p: 'poppins',
+  text: 'poppins',
+};
+
+const components = {
+  Button: {
+    baseStyle: {
+      fontWeight: 500,
+      fontSize: 14,
+    },
+  },
+};
+
+export default extendTheme({
+  colors,
+  fonts,
+  components,
+  config: {
+    initialColorMode: 'light',
+    useSystemColorMode: false,
   },
 });
