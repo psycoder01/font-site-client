@@ -4,13 +4,14 @@ import {
   Switch,
   BrowserRouter as Router,
 } from 'react-router-dom';
-import { Box, Button, useColorMode, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import './App.css';
 import { Routes } from './interfaces';
 
 import { Home } from './pages/Home';
 import { TopFonts } from './pages/TopFonts';
+import NavBar from './components/NavBar';
 
 const routes: Array<Routes> = [
   {
@@ -28,14 +29,10 @@ const routes: Array<Routes> = [
 ];
 
 function App() {
-  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Box>
-      <Button color="primary" onClick={toggleColorMode}>
-        Click me
-      </Button>
-      <Text>Yeahhh!</Text>
       <Router>
+        <NavBar routes={routes} logo="Fonts" />
         <Switch>
           {routes.map((route) => {
             const { Component, path } = route;
