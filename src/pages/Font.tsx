@@ -127,7 +127,7 @@ export const Font = (): ReactElement | null => {
           Preview
         </Title>
         <Box borderWidth="1px" borderRadius="lg" shadow="xl">
-          <svg height="210" width="400">
+          <svg height="210" width="100%">
             <path d={svgMapPoints} />
           </svg>
           <Input
