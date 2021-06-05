@@ -3,12 +3,14 @@ import { extendTheme } from '@chakra-ui/react';
 const colors = {
   primary: 'teal',
   secondary: 'gray',
+  bg: '#FBF9FB',
 };
 
 const fonts = {
   body: 'poppins',
   p: 'poppins',
   text: 'poppins',
+  heading: 'poppins',
 };
 
 const components = {

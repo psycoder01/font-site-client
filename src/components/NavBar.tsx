@@ -1,7 +1,6 @@
-import React from 'react';
 import { Routes } from '../interfaces';
 import { useHistory, useLocation } from 'react-router';
-import { Box, Flex, Link, Stack, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Flex, Stack, Text, useColorMode } from '@chakra-ui/react';
 
 interface NavBarProps {
   routes: Array<Routes>;
@@ -9,13 +8,12 @@ interface NavBarProps {
 }
 
 const NavBar = (props: NavBarProps) => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { toggleColorMode } = useColorMode();
 
   const { routes, logo } = props;
   return (
     <Flex
       py={2}
-      mb={8}
       as="nav"
       w="100%"
       wrap="wrap"

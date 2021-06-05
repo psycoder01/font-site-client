@@ -1,23 +1,25 @@
 import React, { ReactElement } from 'react';
 import { StarIcon } from '@chakra-ui/icons';
-import { Box, Text, Image, Stack, Flex } from '@chakra-ui/react';
+import { Box, Text, Image, Flex } from '@chakra-ui/react';
 
 import { Font } from '../interfaces';
+import { firstLetterCapitalize } from '../utils/extra';
 
 interface FontCardProps {
   font: Font;
+  onClick?: (font: Font) => void;
   children?: React.ReactNode;
 }
 
 export default function FontCard(props: FontCardProps): ReactElement | null {
-  const { font } = props;
+  const { font, onClick = () => {} } = props;
   const { name, description, type, price, thumbUrl, rating } = font;
 
   function showPrice() {
     if (type === 'premium') {
       return (
         <Box as="span" color="gray.600" fontSize="sm">
-          {`${price}`}
+          {`Rs. ${price}`}
         </Box>
       );
     }
@@ -25,7 +27,15 @@ export default function FontCard(props: FontCardProps): ReactElement | null {
   }
 
   return (
-    <Box maxW="lg" borderWidth="1px" borderRadius="lg" overflow="hidden" p="4">
+    <Box
+      p="4"
+      maxW="lg"
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      cursor="pointer"
+      onClick={() => onClick(font)}
+    >
       <Image
         src={thumbUrl ?? 'https://bit.ly/2Z4KKcF'}
         alt="font"
@@ -36,10 +46,15 @@ export default function FontCard(props: FontCardProps): ReactElement | null {
       <Text mt="1" fontWeight="semibold" fontSize="lg">
         {name}
       </Text>
-      <Text fontWeight="semibold" color={type !== 'free' ? 'blue' : 'teal'}>
-        {type}
-      </Text>
-      {showPrice()}
+      <Flex justify="space-between" align="center">
+        <Text
+          fontWeight="semibold"
+          color={type !== 'free' ? 'blue.500' : 'teal'}
+        >
+          {firstLetterCapitalize(type)}
+        </Text>
+        {showPrice()}
+      </Flex>
       <Flex align="center">
         <Text fontWeight="semibold" mr="2">
           {rating}/5

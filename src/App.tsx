@@ -4,14 +4,14 @@ import {
   Switch,
   BrowserRouter as Router,
 } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
 
 import './App.css';
 import { Routes } from './interfaces';
 
 import { Home } from './pages/Home';
-import { TopFonts } from './pages/TopFonts';
+import { Font } from './pages/Font';
 import NavBar from './components/NavBar';
+import { TopFonts } from './pages/TopFonts';
 
 const routes: Array<Routes> = [
   {
@@ -30,25 +30,19 @@ const routes: Array<Routes> = [
 
 function App() {
   return (
-    <Box>
-      <Router>
-        <NavBar routes={routes} logo="Fonts" />
-        <Switch>
-          {routes.map((route) => {
-            const { Component, path } = route;
-            return (
-              <Route
-                key={path}
-                path={path}
-                component={Component}
-                exact={true}
-              />
-            );
-          })}
-          <Redirect to="/" />
-        </Switch>
-      </Router>
-    </Box>
+    <Router>
+      <NavBar routes={routes} logo="Fonts" />
+      <Switch>
+        {routes.map((route) => {
+          const { Component, path } = route;
+          return (
+            <Route key={path} path={path} component={Component} exact={true} />
+          );
+        })}
+        <Route path="/font/:fontName" component={Font} exact={true} />
+        <Redirect to="/" />
+      </Switch>
+    </Router>
   );
 }
 

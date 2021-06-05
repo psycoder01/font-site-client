@@ -21,3 +21,11 @@ export function useGetFonts() {
     },
   });
 }
+
+export function downloadFont(id: string) {
+  return network.get(`/font/download/${id}`, { responseType: 'blob' });
+}
+
+export function getMappedFonts(text: string, output: string) {
+  return network.get(`/font/text=${text}/sink=${output}`);
+}
