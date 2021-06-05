@@ -62,7 +62,7 @@ export const Font = (): ReactElement | null => {
     const url = window.URL.createObjectURL(new Blob([file]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', font.name);
+    link.setAttribute('download', font.name + '.ttf');
     document.body.appendChild(link);
     link.click();
   }
