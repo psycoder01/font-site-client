@@ -139,7 +139,7 @@ export const Font = (): ReactElement | null => {
       </Stack>
       <Box my="20" d="flex" justifyContent="center" alignItems="center">
         <PrimaryButton
-          title="Downlaoad"
+          title="Download"
           loading={loading}
           onClick={() => handleDownloadFont(font.id)}
         />
