@@ -1,10 +1,10 @@
 import { useLocation } from 'react-router';
 import React, { ReactElement, useEffect, useState } from 'react';
 import {
-  Badge,
-  Text,
   Box,
+  Text,
   Flex,
+  Badge,
   Image,
   Stack,
   Input,
@@ -15,19 +15,23 @@ import { Font as FontType } from '../interfaces';
 
 import Page from '../components/Page';
 import Title from '../components/Title';
+import Rating from '../components/Rating';
+import useDeboucer from '../hooks/debouncer';
 import DetailsPair from '../components/DetailsPair';
 import { firstLetterCapitalize } from '../utils/extra';
 import PrimaryButton from '../components/PrimaryButton';
-import { downloadFont, getMappedFonts } from '../api';
-import useDeboucer from '../hooks/debouncer';
+import { downloadFont, getMappedFonts, useRateFonts } from '../api';
 
 export const Font = (): ReactElement | null => {
   const location = useLocation();
   const font = location.state as FontType;
 
+  const [loading, setLoading] = useState(false);
   const [previewText, setPreviewText] = useState('');
   const [svgMapPoints, setSvgMapPoints] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [disableRating, setDisableRating] = useState(false);
+
+  const { mutate: rateFont } = useRateFonts();
 
   const searchText = useDeboucer(previewText, 500);
 
@@ -58,6 +62,29 @@ export const Font = (): ReactElement | null => {
     setPreviewText(event.target.value);
   }
 
+  async function handleRatingChange(ratedStar: number) {
+    const { id, rating } = font;
+    const details = {
+      fontId: id,
+      newRating: ratedStar,
+      oldRating: rating,
+      total: totalRatingVotes(),
+    };
+    try {
+      setDisableRating(true);
+      rateFont(details);
+    } catch (err) {
+      toast({
+        status: 'error',
+        title: 'Error!',
+      });
+    }
+    toast({
+      status: 'info',
+      title: 'Thank you for rating!',
+    });
+  }
+
   function download(file: any) {
     const url = window.URL.createObjectURL(new Blob([file]));
     const link = document.createElement('a');
@@ -80,6 +107,23 @@ export const Font = (): ReactElement | null => {
       });
     }
     setLoading(false);
+  }
+
+  function totalRatingVotes() {
+    const {
+      oneStarCount,
+      twoStarCount,
+      threeStarCount,
+      fourStarCount,
+      fiveStarCount,
+    } = font;
+    return (
+      oneStarCount +
+      twoStarCount +
+      threeStarCount +
+      fourStarCount +
+      fiveStarCount
+    );
   }
 
   return (
@@ -107,7 +151,15 @@ export const Font = (): ReactElement | null => {
             Details
           </Title>
           <Stack>
-            <DetailsPair title="Rating" subtitle={font.rating} />
+            <Flex gridGap="4">
+              <DetailsPair title="Rating" subtitle={font.rating} />
+              <Text>{`of ${totalRatingVotes()} votes`}</Text>
+            </Flex>
+            <Rating
+              rating={font.rating}
+              onChange={(index) => handleRatingChange(index)}
+              disabled={disableRating}
+            />
             <DetailsPair title="Downloads" subtitle={font.downloads} />
             <DetailsPair title="Language" subtitle="Nepali, English" />
             <DetailsPair

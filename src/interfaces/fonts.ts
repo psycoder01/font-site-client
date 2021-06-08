@@ -3,11 +3,16 @@ export interface Font {
   ref: string;
   name: string;
   price: string;
-  rating: string;
+  rating: number;
   thumbUrl: string;
   downloads: number;
   searchName: string;
   charMapUrl: string;
   description: string;
+  oneStarCount: number;
+  twoStarCount: number;
+  fourStarCount: number;
+  fiveStarCount: number;
+  threeStarCount: number;
   type: 'free' | 'premium';
 }

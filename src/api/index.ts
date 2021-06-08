@@ -1,5 +1,6 @@
 import network from './network';
-import { useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+
 import { Font } from '../interfaces';
 
 interface Response {
@@ -19,6 +20,9 @@ export function useGetFonts() {
       const fonts = data.data ?? [];
       fonts.map((font) => queryClient.setQueryData(['fonts', font.id], font));
     },
+    onError: (e: any) => {
+      throw e;
+    },
   });
 }
 
@@ -28,4 +32,28 @@ export function downloadFont(id: string) {
 
 export function getMappedFonts(text: string, output: string) {
   return network.get(`/font/text=${text}/sink=${output}`);
+}
+
+interface RateDetails {
+  fontId: string;
+  newRating: number;
+  oldRating: number;
+  total: number;
+}
+
+async function rateFonts(details: RateDetails) {
+  await network.post('/font/rate', details);
+  return details.fontId;
+}
+
+export function useRateFonts() {
+  const queryClient = useQueryClient();
+  return useMutation(async (details: RateDetails) => rateFonts(details), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['fonts', data]);
+    },
+    onError: (e: any) => {
+      throw e;
+    },
+  });
 }
