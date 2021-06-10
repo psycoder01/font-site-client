@@ -72,7 +72,6 @@ export function useGetFontById(id: string) {
   const queryClient = useQueryClient();
   return useQuery(['fonts', id], () => getFontById(id), {
     onSuccess: (data) => {
-      console.log(data);
       const font = data.data;
       queryClient.setQueryData(['fonts', font.id], font);
     },

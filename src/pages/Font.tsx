@@ -10,6 +10,7 @@ import {
   Input,
   useToast,
 } from '@chakra-ui/react';
+import ReCaptcha from 'react-google-recaptcha';
 
 import { Font as FontType } from '../interfaces';
 
@@ -34,14 +35,17 @@ export const Font = (): ReactElement | null => {
 
   const { data } = useGetFontById(paths[paths.length - 1]);
   const font = data?.data ?? ({} as FontType);
-  console.log(data);
 
   const [loading, setLoading] = useState(false);
+  const [verified, setVerified] = useState(false);
   const [previewText, setPreviewText] = useState('');
   const [svgMapPoints, setSvgMapPoints] = useState('');
   const [disableRating, setDisableRating] = useState(false);
 
   const { mutate: rateFont } = useRateFonts();
+
+  const siteKey = process.env.REACT_APP_SITE_KEY ?? 'some_random_key';
+  console.log(siteKey);
 
   const searchText = useDeboucer(previewText, 500);
 
@@ -136,6 +140,12 @@ export const Font = (): ReactElement | null => {
     );
   }
 
+  function onRecaptchaVerified(token: string | null) {
+    if (token) {
+      setVerified(true);
+    }
+  }
+
   return (
     <Page>
       <Stack spacing="4">
@@ -199,13 +209,20 @@ export const Font = (): ReactElement | null => {
           />
         </Box>
       </Stack>
-      <Box my="20" d="flex" justifyContent="center" alignItems="center">
+      <Flex
+        my="20"
+        flexDir="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <ReCaptcha sitekey={siteKey} onChange={onRecaptchaVerified} />
         <PrimaryButton
           title="Download"
           loading={loading}
+          isDisabled={!verified}
           onClick={() => handleDownloadFont(font?.id)}
         />
-      </Box>
+      </Flex>
       <Box h="20vh">
         <Text>Ektukra Fonts</Text>
       </Box>
