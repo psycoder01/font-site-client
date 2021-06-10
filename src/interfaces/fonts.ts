@@ -5,6 +5,7 @@ export interface Font {
   price: string;
   rating: number;
   thumbUrl: string;
+  language: string;
   downloads: number;
   searchName: string;
   charMapUrl: string;

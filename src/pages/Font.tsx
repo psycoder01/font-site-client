@@ -20,11 +20,21 @@ import useDeboucer from '../hooks/debouncer';
 import DetailsPair from '../components/DetailsPair';
 import { firstLetterCapitalize } from '../utils/extra';
 import PrimaryButton from '../components/PrimaryButton';
-import { downloadFont, getMappedFonts, useRateFonts } from '../api';
+import {
+  downloadFont,
+  getMappedFonts,
+  useGetFontById,
+  useRateFonts,
+} from '../api';
 
 export const Font = (): ReactElement | null => {
   const location = useLocation();
-  const font = location.state as FontType;
+  const { pathname } = location;
+  const paths = pathname.split('/');
+
+  const { data } = useGetFontById(paths[paths.length - 1]);
+  const font = data?.data ?? ({} as FontType);
+  console.log(data);
 
   const [loading, setLoading] = useState(false);
   const [previewText, setPreviewText] = useState('');
@@ -47,7 +57,7 @@ export const Font = (): ReactElement | null => {
 
   async function mapSearchText() {
     try {
-      const resp = await getMappedFonts(searchText, font.searchName + '.ttf');
+      const resp = await getMappedFonts(searchText, font?.searchName + '.ttf');
       const svgPointsOfMappedFont = resp.data.data;
       setSvgMapPoints(svgPointsOfMappedFont);
     } catch (err) {
@@ -161,10 +171,10 @@ export const Font = (): ReactElement | null => {
               disabled={disableRating}
             />
             <DetailsPair title="Downloads" subtitle={font.downloads} />
-            <DetailsPair title="Language" subtitle="Nepali, English" />
+            <DetailsPair title="Language" subtitle={font.language} />
             <DetailsPair
               title="Type"
-              subtitle={firstLetterCapitalize(font.type)}
+              subtitle={firstLetterCapitalize(font?.type ?? '')}
             />
             <DetailsPair title="Price" subtitle={`Rs . ${font.price}`} />
           </Stack>

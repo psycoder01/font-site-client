@@ -13,8 +13,8 @@ export const Home = () => {
   const fonts = data?.data ?? [];
 
   function onCardClick(font: Font) {
-    const { searchName } = font;
-    history.push('/font/' + searchName, font);
+    const { id } = font;
+    history.push('/font/' + id);
   }
 
   return (

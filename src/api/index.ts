@@ -50,7 +50,31 @@ export function useRateFonts() {
   const queryClient = useQueryClient();
   return useMutation(async (details: RateDetails) => rateFonts(details), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['fonts', data]);
+      queryClient.invalidateQueries(['fonts']);
+    },
+    onError: (e: any) => {
+      throw e;
+    },
+  });
+}
+
+interface GetFont {
+  success: boolean;
+  data: Font;
+}
+
+async function getFontById(id: string): Promise<GetFont> {
+  const resp = await network.get(`/font/id=${id}`);
+  return resp.data;
+}
+
+export function useGetFontById(id: string) {
+  const queryClient = useQueryClient();
+  return useQuery(['fonts', id], () => getFontById(id), {
+    onSuccess: (data) => {
+      console.log(data);
+      const font = data.data;
+      queryClient.setQueryData(['fonts', font.id], font);
     },
     onError: (e: any) => {
       throw e;

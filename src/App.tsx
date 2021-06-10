@@ -39,7 +39,7 @@ function App() {
             <Route key={path} path={path} component={Component} exact={true} />
           );
         })}
-        <Route path="/font/:fontName" component={Font} exact={true} />
+        <Route path="/font/:fontId" component={Font} exact={true} />
         <Redirect to="/" />
       </Switch>
     </Router>
