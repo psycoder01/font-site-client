@@ -140,9 +140,9 @@ export const Font = (): ReactElement | null => {
     <Page>
       <Stack spacing="4">
         <Flex gridGap="4" justify="flex-start" align="center">
-          <Title>{font.name}</Title>
+          <Title>{font?.name}</Title>
           <Badge borderRadius="full" px="2" colorScheme="teal">
-            {font.type}
+            {font?.type}
           </Badge>
         </Flex>
         <Box>
@@ -162,28 +162,28 @@ export const Font = (): ReactElement | null => {
           </Title>
           <Stack>
             <Flex gridGap="4">
-              <DetailsPair title="Rating" subtitle={font.rating} />
+              <DetailsPair title="Rating" subtitle={font?.rating} />
               <Text>{`of ${totalRatingVotes()} votes`}</Text>
             </Flex>
             <Rating
-              rating={font.rating}
+              rating={font?.rating}
               onChange={(index) => handleRatingChange(index)}
               disabled={disableRating}
             />
-            <DetailsPair title="Downloads" subtitle={font.downloads} />
-            <DetailsPair title="Language" subtitle={font.language} />
+            <DetailsPair title="Downloads" subtitle={font?.downloads} />
+            <DetailsPair title="Language" subtitle={font?.language} />
             <DetailsPair
               title="Type"
               subtitle={firstLetterCapitalize(font?.type ?? '')}
             />
-            <DetailsPair title="Price" subtitle={`Rs . ${font.price}`} />
+            <DetailsPair title="Price" subtitle={`Rs . ${font?.price}`} />
           </Stack>
         </Box>
         <Box>
           <Title size="md" underline>
             Description
           </Title>
-          <Text>{font.description}</Text>
+          <Text>{font?.description}</Text>
         </Box>
         <Title size="md" underline>
           Preview
@@ -203,7 +203,7 @@ export const Font = (): ReactElement | null => {
         <PrimaryButton
           title="Download"
           loading={loading}
-          onClick={() => handleDownloadFont(font.id)}
+          onClick={() => handleDownloadFont(font?.id)}
         />
       </Box>
       <Box h="20vh">
