@@ -45,7 +45,6 @@ export const Font = (): ReactElement | null => {
   const { mutate: rateFont } = useRateFonts();
 
   const siteKey = process.env.REACT_APP_SITE_KEY ?? 'some_random_key';
-  console.log(siteKey);
 
   const searchText = useDeboucer(previewText, 500);
 
