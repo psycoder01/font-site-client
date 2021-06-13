@@ -5,7 +5,6 @@ import {
   Text,
   Flex,
   Badge,
-  Image,
   Stack,
   Input,
   useToast,
@@ -28,6 +27,7 @@ import {
   getMappedFonts,
   useGetFontById,
 } from '../api';
+import ThumbView from '../components/ThumbView';
 
 const toastDuration = 3000;
 
@@ -152,7 +152,6 @@ export const Font = (): ReactElement | null => {
   }
 
   if (error) {
-    const e = error as any;
     toast({
       status: 'error',
       title: 'Error fetching data !.',
@@ -169,15 +168,9 @@ export const Font = (): ReactElement | null => {
           </Badge>
         </Flex>
         <Box>
-          <Image
-            src={font.thumbUrl ?? 'https://bit.ly/2Z4KKcF'}
-            alt="font"
-            h="10em"
-            w="100%"
-            objectFit="cover"
-          />
-          This area will be for previewing font samples . Lorem Ipsum with
-          selected character encoding
+          {font?.name && (
+            <ThumbView name={font?.searchName} text={font?.thumbUrl} />
+          )}
         </Box>
         <Box>
           <Title size="md" underline>

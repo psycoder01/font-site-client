@@ -7,6 +7,7 @@ import { AxiosResponse } from 'axios';
 const queryCache = {
   fonts: 'fonts',
   glyphs: 'glyphs',
+  thumb: 'thumb',
 };
 
 interface Response {
@@ -39,7 +40,7 @@ export function downloadFont(id: string) {
 }
 
 export function getMappedFonts(text: string, output: string) {
-  return network.get(`/font/text=${text}/sink=${output}`);
+  return network.post(`/font/preview`, { text, filter: output });
 }
 
 interface RateDetails {
@@ -103,4 +104,15 @@ export function useGetCharMaps(searchName: string) {
   return useQuery([queryCache.glyphs, searchName], () =>
     getCharMaps(searchName),
   );
+}
+
+interface GetThumbMap {
+  success: boolean;
+  data: string;
+}
+export function useGetThumbMaps(text: string, output: string) {
+  return useQuery([queryCache.thumb, text, output], async () => {
+    const resp: AxiosResponse<GetThumbMap> = await getMappedFonts(text, output);
+    return resp.data.data;
+  });
 }

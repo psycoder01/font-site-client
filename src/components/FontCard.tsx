@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 import { StarIcon } from '@chakra-ui/icons';
-import { Box, Text, Image, Flex } from '@chakra-ui/react';
+import { Box, Text, Flex } from '@chakra-ui/react';
 
+import ThumbView from './ThumbView';
 import { Font } from '../interfaces';
 import { firstLetterCapitalize } from '../utils/extra';
 
@@ -13,7 +14,7 @@ interface FontCardProps {
 
 export default function FontCard(props: FontCardProps): ReactElement | null {
   const { font, onClick = () => {} } = props;
-  const { name, description, type, price, thumbUrl, rating } = font;
+  const { name, searchName, description, type, price, thumbUrl, rating } = font;
 
   function showPrice() {
     if (type === 'premium') {
@@ -36,13 +37,7 @@ export default function FontCard(props: FontCardProps): ReactElement | null {
       cursor="pointer"
       onClick={() => onClick(font)}
     >
-      <Image
-        src={thumbUrl ?? 'https://bit.ly/2Z4KKcF'}
-        alt="font"
-        h="10em"
-        w="100%"
-        objectFit="cover"
-      />
+      <ThumbView name={searchName} text={thumbUrl} />
       <Text mt="1" fontWeight="semibold" fontSize="lg">
         {name}
       </Text>
@@ -53,7 +48,7 @@ export default function FontCard(props: FontCardProps): ReactElement | null {
         >
           {firstLetterCapitalize(type)}
         </Text>
-        {showPrice()}
+        {/*{showPrice()}*/}
       </Flex>
       <Flex align="center">
         <Text fontWeight="semibold" mr="2">
