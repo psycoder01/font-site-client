@@ -2,6 +2,12 @@ import network from './network';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { Font } from '../interfaces';
+import { AxiosResponse } from 'axios';
+
+const queryCache = {
+  fonts: 'fonts',
+  glyphs: 'glyphs',
+};
 
 interface Response {
   sucesss: boolean;
@@ -15,10 +21,12 @@ async function getFonts(): Promise<Response> {
 
 export function useGetFonts() {
   const queryClient = useQueryClient();
-  return useQuery(['fonts'], getFonts, {
+  return useQuery([queryCache.fonts], getFonts, {
     onSuccess: (data) => {
       const fonts = data.data ?? [];
-      fonts.map((font) => queryClient.setQueryData(['fonts', font.id], font));
+      fonts.map((font) =>
+        queryClient.setQueryData([queryCache.fonts, font.id], font),
+      );
     },
     onError: (e: any) => {
       throw e;
@@ -50,7 +58,7 @@ export function useRateFonts() {
   const queryClient = useQueryClient();
   return useMutation(async (details: RateDetails) => rateFonts(details), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['fonts']);
+      queryClient.invalidateQueries([queryCache.fonts, data]);
     },
     onError: (e: any) => {
       throw e;
@@ -63,20 +71,36 @@ interface GetFont {
   data: Font;
 }
 
-async function getFontById(id: string): Promise<GetFont> {
-  const resp = await network.get(`/font/id=${id}`);
-  return resp.data;
+async function getFontById(id: number): Promise<Font> {
+  try {
+    const resp: AxiosResponse<GetFont> = await network.get(`/font/id=${id}`);
+    return resp.data.data;
+  } catch (err) {
+    throw err;
+  }
 }
 
-export function useGetFontById(id: string) {
-  const queryClient = useQueryClient();
-  return useQuery(['fonts', id], () => getFontById(id), {
-    onSuccess: (data) => {
-      const font = data.data;
-      queryClient.setQueryData(['fonts', font.id], font);
-    },
-    onError: (e: any) => {
-      throw e;
-    },
-  });
+export function useGetFontById(id: number) {
+  return useQuery([queryCache.fonts, id], () => getFontById(id));
+}
+
+interface GetCharMap {
+  success: boolean;
+  data: string[];
+}
+async function getCharMaps(searchName: string): Promise<string[]> {
+  try {
+    const resp: AxiosResponse<GetCharMap> = await network.get(
+      `/font/gylphs/searchName=${searchName}`,
+    );
+    return resp.data.data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export function useGetCharMaps(searchName: string) {
+  return useQuery([queryCache.glyphs, searchName], () =>
+    getCharMaps(searchName),
+  );
 }

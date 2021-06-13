@@ -18,23 +18,29 @@ import Page from '../components/Page';
 import Title from '../components/Title';
 import Rating from '../components/Rating';
 import useDeboucer from '../hooks/debouncer';
+import CharMaps from '../components/CharMaps';
 import DetailsPair from '../components/DetailsPair';
 import { firstLetterCapitalize } from '../utils/extra';
 import PrimaryButton from '../components/PrimaryButton';
 import {
   downloadFont,
+  useRateFonts,
   getMappedFonts,
   useGetFontById,
-  useRateFonts,
 } from '../api';
 
+const toastDuration = 3000;
+
 export const Font = (): ReactElement | null => {
+  const toast = useToast({
+    duration: toastDuration,
+    variant: 'solid',
+    position: 'bottom',
+    isClosable: true,
+  });
   const location = useLocation();
   const { pathname } = location;
   const paths = pathname.split('/');
-
-  const { data } = useGetFontById(paths[paths.length - 1]);
-  const font = data?.data ?? ({} as FontType);
 
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
@@ -42,13 +48,13 @@ export const Font = (): ReactElement | null => {
   const [svgMapPoints, setSvgMapPoints] = useState('');
   const [disableRating, setDisableRating] = useState(false);
 
-  const { mutate: rateFont } = useRateFonts();
-
+  const searchText = useDeboucer(previewText, 500);
   const siteKey = process.env.REACT_APP_SITE_KEY ?? 'some_random_key';
 
-  const searchText = useDeboucer(previewText, 500);
-
-  const toast = useToast();
+  const { mutate: rateFont } = useRateFonts();
+  const id = paths[paths.length - 1];
+  const { data, error } = useGetFontById(parseInt(id));
+  const font = data ?? ({} as FontType);
 
   useEffect(() => {
     if (searchText.length) {
@@ -145,6 +151,14 @@ export const Font = (): ReactElement | null => {
     }
   }
 
+  if (error) {
+    const e = error as any;
+    toast({
+      status: 'error',
+      title: 'Error fetching data !.',
+    });
+  }
+
   return (
     <Page>
       <Stack spacing="4">
@@ -222,7 +236,8 @@ export const Font = (): ReactElement | null => {
           onClick={() => handleDownloadFont(font?.id)}
         />
       </Flex>
-      <Box h="20vh">
+      {font.searchName && <CharMaps name={font.searchName} />}
+      <Box mt="8" h="20vh">
         <Text>Ektukra Fonts</Text>
       </Box>
     </Page>
