@@ -1,14 +1,12 @@
 export interface Font {
   id: string;
-  ref: string;
   name: string;
   price: string;
   rating: number;
-  thumbUrl: string;
   language: string;
   downloads: number;
+  thumbChars: string;
   searchName: string;
-  charMapUrl: string;
   description: string;
   oneStarCount: number;
   twoStarCount: number;

@@ -14,7 +14,15 @@ interface FontCardProps {
 
 export default function FontCard(props: FontCardProps): ReactElement | null {
   const { font, onClick = () => {} } = props;
-  const { name, searchName, description, type, price, thumbUrl, rating } = font;
+  const {
+    name,
+    searchName,
+    description,
+    type,
+    price,
+    thumbChars,
+    rating,
+  } = font;
 
   function showPrice() {
     if (type === 'premium') {
@@ -37,7 +45,7 @@ export default function FontCard(props: FontCardProps): ReactElement | null {
       cursor="pointer"
       onClick={() => onClick(font)}
     >
-      <ThumbView name={searchName} text={thumbUrl} />
+      <ThumbView name={searchName} text={thumbChars} />
       <Text mt="1" fontWeight="semibold" fontSize="lg">
         {name}
       </Text>

@@ -169,7 +169,7 @@ export const Font = (): ReactElement | null => {
         </Flex>
         <Box>
           {font?.name && (
-            <ThumbView name={font?.searchName} text={font?.thumbUrl} />
+            <ThumbView name={font?.searchName} text={font?.thumbChars} />
           )}
         </Box>
         <Box>
