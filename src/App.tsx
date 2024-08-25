@@ -1,8 +1,7 @@
 import {
-  Redirect,
-  Route,
-  Switch,
-  BrowserRouter as Router,
+    createBrowserRouter,
+    Outlet,
+    RouterProvider,
 } from 'react-router-dom';
 
 import './App.css';
@@ -13,37 +12,40 @@ import { Font } from './pages/Font';
 import NavBar from './components/NavBar';
 import { TopFonts } from './pages/TopFonts';
 
-const routes: Array<Routes> = [
-  {
-    name: 'Home',
+
+const childrenRoutes: Routes[] = [{
+    name: "Home",
     path: '/',
-    Component: Home,
-    exact: true,
-  },
-  {
+    element: <Home />,
+},
+{
     name: 'Top Fonts',
     path: '/top',
-    Component: TopFonts,
-    exact: true,
-  },
-];
+    element: <TopFonts />
+}]
 
+const Layout = ({ routes }: { routes: Routes[] }) => <>
+    <NavBar routes={routes} logo="Fonts" />
+    <Outlet />
+</>
+
+const navRoutes = [{
+    path: '/',
+    element: <Layout routes={childrenRoutes} />,
+    children: childrenRoutes,
+}]
+
+const routes = [
+    {
+        name: "Font",
+        path: '/font/:fontId',
+        element: <Font />,
+    },
+]
+
+const router = createBrowserRouter([...navRoutes, ...routes]);
 function App() {
-  return (
-    <Router>
-      <NavBar routes={routes} logo="Fonts" />
-      <Switch>
-        {routes.map((route) => {
-          const { Component, path } = route;
-          return (
-            <Route key={path} path={path} component={Component} exact={true} />
-          );
-        })}
-        <Route path="/font/:fontId" component={Font} exact={true} />
-        <Redirect to="/" />
-      </Switch>
-    </Router>
-  );
+    return <RouterProvider router={router} />;
 }
 
 export default App;

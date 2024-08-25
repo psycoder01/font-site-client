@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Stack } from '@chakra-ui/react';
 
 import { Font } from '../interfaces';
@@ -7,14 +7,14 @@ import Page from '../components/Page';
 import FontCard from '../components/FontCard';
 
 export const Home = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { data } = useGetFonts();
   const fonts = data?.data ?? [];
 
   function onCardClick(font: Font) {
     const { id } = font;
-    history.push('/font/' + id);
+    navigate('/font/' + id);
   }
 
   return (

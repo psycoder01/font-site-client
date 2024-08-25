@@ -1,5 +1,5 @@
 import { Routes } from '../interfaces';
-import { useHistory, useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Flex, Stack, Text, useColorMode } from '@chakra-ui/react';
 
 interface NavBarProps {
@@ -53,7 +53,7 @@ interface MenuItemProps {
 const MenuItem = (props: MenuItemProps) => {
   const { to, title } = props;
   const { pathname } = useLocation();
-  const { push } = useHistory();
+  const navigate = useNavigate();
 
   function bgColor() {
     const isCurrentPath = pathname === to;
@@ -64,7 +64,7 @@ const MenuItem = (props: MenuItemProps) => {
   }
 
   function changeRoute() {
-    push(to);
+    navigate(to);
   }
 
   return (
